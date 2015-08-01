@@ -14,7 +14,7 @@ import (
 const (
 	usage = `
 Usage:
-	drone-downgrade2to1 <filename>
+  drone-downgrade2to1 <filename>
 `
 )
 
@@ -113,8 +113,12 @@ func main() {
 				Evidence:       i.Evidence,
 				Solution:       i.Solution,
 				Flag:           i.IsFlagged,
-				IdentifiedBy:   i.IdentifiedBy,
 				LastModifiedBy: i.LastModifiedBy,
+			}
+			for _, ident := range i.IdentifiedBy {
+				l1Vuln.IdentifiedBy = append(l1Vuln.IdentifiedBy, lv1.IdentifiedBy{
+					Tool: ident.Tool,
+				})
 			}
 			for _, h := range i.Hosts {
 				l1Vuln.Hosts = append(l1Vuln.Hosts, lv1.VulnerabilityHost{
@@ -135,12 +139,13 @@ func main() {
 					Tool: p.Tool,
 				})
 			}
+			l1.Vulnerabilities = append(l1.Vulnerabilities, l1Vuln)
 		}
 	}
 
-	str, err := json.Marshal(l1)
+	buf, err := json.Marshal(l1)
 	if err != nil {
 		log.Fatalf("Fatal: Could not stringify JSON. Error %s", err.Error())
 	}
-	fmt.Println(str)
+	fmt.Println(string(buf))
 }
