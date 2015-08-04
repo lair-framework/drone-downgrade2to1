@@ -79,6 +79,7 @@ func main() {
 				Flag:           s.IsFlagged,
 				Status:         s.Status,
 				Port:           s.Port,
+				Protocol:       s.Protocol,
 				Service:        s.Service,
 				Product:        s.Product,
 				LastModifiedBy: s.LastModifiedBy,
@@ -89,7 +90,9 @@ func main() {
 					Content: n.Content,
 				})
 			}
+			l1Host.Ports = append(l1Host.Ports, l1Port)
 		}
+		l1.Hosts = append(l1.Hosts, l1Host)
 		for _, n := range l2.Notes {
 			l1.Notes = append(l1.Notes, lv1.Note{
 				Title:   n.Title,
