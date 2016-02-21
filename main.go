@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strings"
 
 	"github.com/lair-framework/go-lair"
 	lv1 "gopkg.in/lair-framework/go-lair.v1"
@@ -34,8 +35,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("Fatal: Could not open file. Error %s", err.Error())
 	}
+	goodData := strings.Replace(string(data), "\uFEFF", "", -1)
 	l2 := lair.Project{}
-	if err := json.Unmarshal(data, &l2); err != nil {
+	if err := json.Unmarshal([]byte(goodData), &l2); err != nil {
 		log.Fatalf("Fatal: Could not parse JSON. Error %s", err.Error())
 	}
 	l1 := lv1.Project{
